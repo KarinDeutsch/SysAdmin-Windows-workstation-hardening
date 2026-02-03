@@ -13,8 +13,6 @@
 - Location: USA, Keyboard US
 - set up for personal use
 
-![alt text](image.png)
-
 ## 2. Update Strategy
 ### Updates
 An automated update should be done monthly and scheduled according to the Patch Tuesday (second tuesday of the month) and done at off hours to eliminate down time. The monthly update checklist includes:
@@ -26,8 +24,6 @@ An automated update should be done monthly and scheduled according to the Patch 
 
 Use Windows Active hours to ensure the updates are not happening during work hours.
 
-![alt text](image-2.png)
-
 ### Backups
 critical data should be backed up daily at least or automatically upload changes to the cloud or server as it is changed. This way nothing is lost if anything happens. a disk image should be done about every 4 months, which does make a copy of everything.
 
@@ -36,3 +32,34 @@ Nothing is more annoying than having an update starting while you are trying to 
 
 ## 3. Core System Configuration Decisions
 ### Telemetry & privace stance
+The guiding decision is to adopt a "Zero-Telemetry by Default" stance, treating user data as proprietary and private rather than a resource for developers. 
+- Restricted (Disabled): All "phoning home" functionality, including usage analytics, automated crash reporting, and personalized advertising IDs. Diagnostic data is not sent to "the mothership" to ensure maximum privacy.
+- Allowed (Minimal): Only essential, non-PII (Personally Identifiable Information) data required for core functionality, such as security updates or validation checks, are permitted.
+- Tradeoff: By restricting telemetry, developers may lack data to improve the software or detect bugs, which could lead to a less refined user experience or longer times to patch stability issues. 
+
+### Default Services
+The philosophy is "Disable Unused Features," treating every enabled service as a potential security risk or resource drain. 
+- Disabled (Unnecessary): Services that serve no purpose for modern, standalone, or office-based machines. Examples include fax services, Xbox Live services (if not gaming), and Printer Spoolers (set to manual).
+- Disabled (Privacy/Security): Unnecessary cloud integrations, such as OneDrive (unless intended), telemetric background services (e.g., Connected User Experiences), and remote assistance services.
+- Allowed (Essential): Security services (Firewall, Defender), critical OS networking (DNS, DHCP), and core hardware management (Bluetooth, Power Management).
+- Tradeoff: Disabling services can sometimes cause dependencies to break if not done carefully. However, it frees up system resources (RAM/CPU), resulting in faster boot times and better performance. 
+
+### Networking Assumptions
+Networking decisions are based on the "Zero Trust" model, where no network (even home) is inherently safe, requiring verification of every connection. 
+- Home Use: Assume the router is the perimeter. Secure the network by separating IoT devices (smart TVs, printers) from workstations via VLANs or guest networks. Use VPNs for public, untrusted Wi-Fi.
+- Business Use: Assume a hostile environment. Use strict firewall rules, disabled, and managed endpoint protection (EDR). Remote access must always use VPN or Zero Trust Network Access (ZTNA).
+- Mobile Use: Prefer cellular data over public Wi-Fi due to superior encryption, but use a VPN if Wi-Fi is necessary. Enable full-disk encryption and strict lock-screen policies.
+- Tradeoff: Increased network security (e.g., rigid firewalls) can hinder convenience, making it harder to connect to shared devices or access certain services, requiring more active management by the user. 
+
+### Summary
+Area        |   Decision                                            |   Primary Goal
+Telemetry   |   Disable all user tracking & analytics               |   Privacy (Data Minimization)
+Services    |   Disable non-essential services & startup items      |   Performance & Reduced Attack Surface
+Network	    |   Implement "Never Trust, Always Verify" (Zero Trust) |   Security
+
+## 4. Baseline Principles
+A serious Baseline prioritizes Stability and security over the latest features. This way the company reduces technical debt and operaional risk.
+
+- Stability over experimentation: proven LTS versions of software and firmwares over experimental features reducing unpredictable outages.
+- minimal installed components: remove all non-essential services, libraries and tools. Less tools means less attack surface and simplifies future patching & maintenance.
+- Predictable Behavior over Aggressive Optimization: rather go for configurations that provide consistent performance rather than squeezing out marignal game through brittle tuning.
